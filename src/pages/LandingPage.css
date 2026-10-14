@@ -1,0 +1,185 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ASMO Work Order Control Tower — Landing Gateway Styles
+   EDGE-Inspired Defense & Enterprise Visual Sophistication
+   ═══════════════════════════════════════════════════════════════════ */
+
+.asmo-landing {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  background: #0D0B0A;
+  color: #FFFFFF;
+  font-family: var(--font-sans);
+  scroll-behavior: smooth;
+}
+
+/* ── Fixed Cinematic Slideshow Background Layer ── */
+.landing-bg-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.landing-bg-slide {
+  position: absolute;
+  inset: -15px;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transform: scale(1);
+  transition: opacity 1.8s cubic-bezier(0.4, 0, 0.2, 1), transform 8s ease-out;
+  filter: brightness(0.68) contrast(1.08) saturate(0.9);
+}
+
+.landing-bg-slide.active {
+  opacity: 1;
+  transform: scale(1.045);
+}
+
+/* Vignette overlays */
+.landing-overlay-vignette {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(13, 11, 10, 0.88) 0%,
+    rgba(13, 11, 10, 0.55) 25%,
+    rgba(13, 11, 10, 0.82) 65%,
+    rgba(13, 11, 10, 0.98) 100%
+  );
+}
+
+.landing-overlay-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(162, 28, 32, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(162, 28, 32, 0.04) 1px, transparent 1px);
+  background-size: 50px 50px;
+  opacity: 0.6;
+}
+
+/* ── Sticky Top Header ── */
+.landing-nav-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 40px;
+  background: rgba(13, 11, 10, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* ── Hero Content Section ── */
+.landing-hero {
+  position: relative;
+  z-index: 10;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px 40px 40px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.landing-hero-headline {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 800;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  margin-bottom: 1.25rem;
+  color: #FFFFFF;
+  text-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.landing-hero-subtitle {
+  font-size: clamp(1rem, 1.8vw, 1.25rem);
+  color: #E7E2DE;
+  line-height: 1.6;
+  max-width: 680px;
+  margin-bottom: 2rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* ── Metric Strip ── */
+.landing-metrics-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-top: 3.5rem;
+}
+
+.landing-metric-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  transition: all var(--transition-fast);
+}
+
+.landing-metric-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(162, 28, 32, 0.5);
+  transform: translateY(-2px);
+}
+
+/* ── Capabilities Section ── */
+.landing-capabilities {
+  position: relative;
+  z-index: 10;
+  padding: 80px 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.capabilities-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+@media (max-width: 1024px) {
+  .capabilities-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .capabilities-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.capability-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  justifyContent: space-between;
+}
+
+.capability-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--asmo-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+}

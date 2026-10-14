@@ -1,0 +1,65 @@
+/* ═══════════════════════════════════════════════════════════════════
+   ASMO Work Order Control Tower — Login Page Styles
+   EDGE-Inspired Clean Enterprise Split Layout
+   ═══════════════════════════════════════════════════════════════════ */
+
+.asmo-login-page {
+  display: flex;
+  min-height: 100vh;
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+/* ── Left Atmosphere Panel ── */
+.asmo-login-left {
+  flex: 1.15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: radial-gradient(circle at 40% 40%, #261C16 0%, #17110E 60%, #0D0A08 100%);
+  overflow: hidden;
+  color: #FFFFFF;
+}
+
+@media (max-width: 900px) {
+  .asmo-login-left {
+    display: none;
+  }
+}
+
+.asmo-login-left-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  max-width: 540px;
+  width: 100%;
+}
+
+.asmo-login-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* ── Right Authentication Panel ── */
+.asmo-login-right {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 24px;
+  background: #FFFFFF;
+}
+
+.asmo-login-card {
+  width: 100%;
+  max-width: 420px;
+}
