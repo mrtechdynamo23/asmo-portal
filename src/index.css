@@ -192,7 +192,7 @@
 [data-theme='dark'] .input,
 [data-theme='dark'] .select,
 [data-theme='dark'] div.card,
-[data-theme='dark'] [class*="card"] {
+[data-theme='dark'] .asmo-login-box {
   background-color: var(--color-surface) !important;
   color: var(--color-text) !important;
   border-color: var(--color-border) !important;

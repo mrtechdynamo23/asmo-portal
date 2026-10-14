@@ -1,6 +1,6 @@
 /* ═══════════════════════════════════════════════════════════════════
    ASMO Work Order Control Tower — Login Page Styles
-   EDGE-Inspired Clean Enterprise Split Layout
+   EDGE-Inspired Clean Enterprise Split Layout with Full Dark Mode
    ═══════════════════════════════════════════════════════════════════ */
 
 .asmo-login-page {
@@ -53,13 +53,42 @@
 .asmo-login-right {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 24px;
-  background: #FFFFFF;
+  padding: 40px 32px;
+  position: relative;
+  min-height: 100vh;
+  background: var(--color-bg);
+  transition: background var(--transition-base);
 }
 
-.asmo-login-card {
+[data-theme='light'] .asmo-login-right {
+  background: linear-gradient(145deg, #FAF8F6 0%, #F3EFEA 50%, #ECE7E1 100%);
+}
+
+[data-theme='dark'] .asmo-login-right {
+  background: radial-gradient(ellipse at 80% 20%, rgba(162, 28, 32, 0.04) 0%, transparent 60%), #141210;
+}
+
+.asmo-login-card-wrapper {
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
+}
+
+.asmo-login-box {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-top: 3.5px solid var(--asmo-primary);
+  border-radius: 14px;
+  padding: 34px 32px 28px 32px;
+  box-shadow: 0 16px 36px -12px rgba(15, 23, 42, 0.12), 0 0 0 1px rgba(15, 23, 42, 0.04);
+  transition: all var(--transition-base);
+}
+
+[data-theme='dark'] .asmo-login-box {
+  background: #201D1A;
+  border-color: #3A342E;
+  border-top-color: var(--asmo-primary);
+  box-shadow: 0 20px 40px -12px rgba(0, 0, 0, 0.6);
 }

@@ -1,12 +1,25 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, ShieldCheck, Lock, ArrowRight, User as UserIcon, CheckCircle2 } from 'lucide-react';
+import { Eye, EyeOff, ShieldCheck, Lock, ArrowRight, User as UserIcon, CheckCircle2, Sun, Moon } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import './LoginPage.css';
 
 export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const { users, setCurrentUser } = useStore();
+
+  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('asmo_theme') : null;
+    if (saved === 'dark' || saved === 'light') return saved;
+    return typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  });
+
+  const toggleTheme = () => {
+    const next = theme === 'light' ? 'dark' : 'light';
+    setTheme(next);
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('asmo_theme', next);
+  };
 
   // Prefilled demo credentials per Section 7
   const [username, setUsername] = useState('asmo.admin');
@@ -125,168 +138,193 @@ export const LoginPage: React.FC = () => {
 
       {/* ── Right Panel: Authentication Card ── */}
       <div className="asmo-login-right">
-        <div className="asmo-login-card">
-          {/* Header */}
-          <div style={{ marginBottom: '2rem' }}>
-            <div
-              style={{
-                display: 'inline-block',
-                backgroundColor: '#FFFFFF',
-                padding: '4px 10px',
-                borderRadius: '6px',
-                border: '1px solid var(--color-border)',
-                marginBottom: '1rem',
-              }}
-            >
-              <img src="/brand/asmo-logo.jpg" alt="ASMO Logo" style={{ height: '28px', objectFit: 'contain' }} />
-            </div>
+        {/* Top-Right Theme Toggle */}
+        <div style={{ position: 'absolute', top: '24px', right: '28px', zIndex: 10 }}>
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className="btn btn-secondary btn-sm"
+            title={`Switch to ${theme === 'light' ? 'Dark' : 'Light'} Mode`}
+            style={{ padding: '8px 12px', borderRadius: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}
+          >
+            {theme === 'light' ? <Moon size={15} /> : <Sun size={15} />}
+            <span style={{ fontSize: '11px', fontWeight: 600 }}>{theme === 'light' ? 'Dark' : 'Light'}</span>
+          </button>
+        </div>
 
-            <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-text)', margin: '0 0 0.25rem 0' }}>
-              Sign in to Control Tower
-            </h1>
-            <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', margin: 0 }}>
-              Enter your corporate credentials to access the ASMO workspace.
-            </p>
-          </div>
-
-          {/* Form */}
-          <form onSubmit={handleSubmit}>
-            {error && (
+        <div className="asmo-login-card-wrapper">
+          <div className="asmo-login-box">
+            {/* Header */}
+            <div style={{ marginBottom: '1.75rem' }}>
               <div
                 style={{
-                  padding: '10px 14px',
-                  backgroundColor: 'var(--color-danger-bg)',
-                  color: 'var(--color-danger)',
-                  border: '1px solid var(--color-danger-border)',
+                  display: 'inline-block',
+                  backgroundColor: '#FFFFFF',
+                  padding: '4px 10px',
                   borderRadius: '6px',
-                  fontSize: '12px',
-                  marginBottom: '1.25rem',
+                  border: '1px solid var(--color-border)',
+                  marginBottom: '1rem',
+                  boxShadow: 'var(--shadow-xs)',
                 }}
               >
-                {error}
+                <img src="/brand/asmo-logo.jpg" alt="ASMO Logo" style={{ height: '28px', objectFit: 'contain' }} />
               </div>
-            )}
 
-            {/* Username */}
-            <div style={{ marginBottom: '1.25rem' }}>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px', color: 'var(--color-text)' }}>
-                Corporate Username
-              </label>
-              <div style={{ position: 'relative' }}>
-                <UserIcon size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
-                <input
-                  type="text"
-                  required
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  style={{
-                    width: '100%',
-                    padding: '10px 12px 10px 36px',
-                    fontSize: '13px',
-                    border: '1px solid var(--color-border)',
-                    borderRadius: '8px',
-                    outline: 'none',
-                    backgroundColor: 'var(--color-bg)',
-                    fontFamily: 'var(--font-sans)',
-                  }}
-                />
-              </div>
+              <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-text)', margin: '0 0 0.25rem 0' }}>
+                Sign in to Control Tower
+              </h1>
+              <p style={{ fontSize: '12px', color: 'var(--color-text-secondary)', margin: 0 }}>
+                Enter your corporate credentials to access the ASMO workspace.
+              </p>
             </div>
 
-            {/* Password with Visibility Toggle */}
-            <div style={{ marginBottom: '1.5rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-text)' }}>
-                  Password
-                </label>
-                <span style={{ fontSize: '11px', color: 'var(--asmo-primary)', fontWeight: 600 }}>
-                  Demo Access
-                </span>
-              </div>
-              <div style={{ position: 'relative' }}>
-                <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+            {/* Form */}
+            <form onSubmit={handleSubmit}>
+              {error && (
+                <div
                   style={{
-                    width: '100%',
-                    padding: '10px 38px 10px 36px',
-                    fontSize: '13px',
-                    border: '1px solid var(--color-border)',
-                    borderRadius: '8px',
-                    outline: 'none',
-                    backgroundColor: 'var(--color-bg)',
-                    fontFamily: 'var(--font-sans)',
+                    padding: '10px 14px',
+                    backgroundColor: 'var(--color-danger-bg)',
+                    color: 'var(--color-danger)',
+                    border: '1px solid var(--color-danger-border)',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    marginBottom: '1.25rem',
                   }}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword(!showPassword)}
-                  style={{
-                    position: 'absolute',
-                    right: '10px',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    background: 'none',
-                    border: 'none',
-                    cursor: 'pointer',
-                    color: 'var(--color-text-muted)',
-                    display: 'flex',
-                  }}
-                  title={showPassword ? 'Hide password' : 'Show password'}
                 >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </div>
+                  {error}
+                </div>
+              )}
 
-            {/* Single Sign In Button */}
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="btn btn-primary"
+              {/* Username */}
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, marginBottom: '6px', color: 'var(--color-text)' }}>
+                  Corporate Username
+                </label>
+                <div style={{ position: 'relative' }}>
+                  <UserIcon size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', pointerEvents: 'none' }} />
+                  <input
+                    type="text"
+                    required
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    style={{
+                      width: '100%',
+                      height: '44px',
+                      padding: '10px 12px 10px 38px',
+                      fontSize: '13.5px',
+                      border: '1px solid var(--color-border)',
+                      borderRadius: '8px',
+                      outline: 'none',
+                      backgroundColor: 'var(--color-surface-raised)',
+                      color: 'var(--color-text)',
+                      fontFamily: 'var(--font-sans)',
+                      transition: 'border-color 0.15s, box-shadow 0.15s',
+                    }}
+                  />
+                </div>
+              </div>
+
+              {/* Password with Visibility Toggle */}
+              <div style={{ marginBottom: '1.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                  <label style={{ fontSize: '12px', fontWeight: 700, color: 'var(--color-text)' }}>
+                    Password
+                  </label>
+                  <span style={{ fontSize: '11px', color: 'var(--asmo-primary)', fontWeight: 600 }}>
+                    Demo Access
+                  </span>
+                </div>
+                <div style={{ position: 'relative' }}>
+                  <Lock size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', pointerEvents: 'none' }} />
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    style={{
+                      width: '100%',
+                      height: '44px',
+                      padding: '10px 40px 10px 38px',
+                      fontSize: '13.5px',
+                      border: '1px solid var(--color-border)',
+                      borderRadius: '8px',
+                      outline: 'none',
+                      backgroundColor: 'var(--color-surface-raised)',
+                      color: 'var(--color-text)',
+                      fontFamily: 'var(--font-sans)',
+                      transition: 'border-color 0.15s, box-shadow 0.15s',
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      position: 'absolute',
+                      right: '10px',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      color: 'var(--color-text-muted)',
+                      display: 'flex',
+                      padding: '4px',
+                    }}
+                    title={showPassword ? 'Hide password' : 'Show password'}
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+              </div>
+
+              {/* Single Sign In Button */}
+              <button
+                type="submit"
+                disabled={isLoading}
+                className="btn btn-primary"
+                style={{
+                  width: '100%',
+                  height: '44px',
+                  fontSize: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  borderRadius: '8px',
+                  opacity: isLoading ? 0.7 : 1,
+                  cursor: isLoading ? 'not-allowed' : 'pointer',
+                }}
+              >
+                {isLoading ? (
+                  <span>Signing in...</span>
+                ) : (
+                  <>
+                    <span>Sign in</span>
+                    <ArrowRight size={16} />
+                  </>
+                )}
+              </button>
+            </form>
+
+            {/* Demo Note */}
+            <div
               style={{
-                width: '100%',
-                padding: '12px',
-                fontSize: '14px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '8px',
+                marginTop: '1.75rem',
+                padding: '10px 14px',
+                backgroundColor: 'var(--color-surface-raised)',
+                border: '1px solid var(--color-border)',
                 borderRadius: '8px',
-                opacity: isLoading ? 0.7 : 1,
+                fontSize: '11px',
+                color: 'var(--color-text-secondary)',
+                lineHeight: 1.5,
               }}
             >
-              {isLoading ? (
-                <span>Signing in...</span>
-              ) : (
-                <>
-                  <span>Sign in</span>
-                  <ArrowRight size={16} />
-                </>
-              )}
-            </button>
-          </form>
-
-          {/* Demo Note */}
-          <div
-            style={{
-              marginTop: '1.75rem',
-              padding: '10px 14px',
-              backgroundColor: 'var(--color-surface-raised)',
-              border: '1px solid var(--color-border)',
-              borderRadius: '8px',
-              fontSize: '11px',
-              color: 'var(--color-text-secondary)',
-              lineHeight: 1.5,
-            }}
-          >
-            <div style={{ fontWeight: 700, color: 'var(--color-text)', marginBottom: '2px' }}>
-              Prefilled Demo Credentials:
+              <div style={{ fontWeight: 700, color: 'var(--color-text)', marginBottom: '2px' }}>
+                Prefilled Demo Credentials:
+              </div>
+              Username: <strong style={{ fontFamily: 'var(--font-mono)' }}>asmo.admin</strong> • Password: <strong style={{ fontFamily: 'var(--font-mono)' }}>Asmo@2026</strong>
             </div>
-            Username: <strong style={{ fontFamily: 'var(--font-mono)' }}>asmo.admin</strong> • Password: <strong style={{ fontFamily: 'var(--font-mono)' }}>Asmo@2026</strong>
           </div>
         </div>
       </div>
