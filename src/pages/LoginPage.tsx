@@ -9,16 +9,18 @@ export const LoginPage: React.FC = () => {
   const { users, setCurrentUser } = useStore();
 
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    const saved = typeof window !== 'undefined' ? localStorage.getItem('asmo_theme') : null;
+    const docTheme = typeof document !== 'undefined' ? (document.documentElement.getAttribute('data-theme') as 'light' | 'dark') : null;
+    if (docTheme === 'dark' || docTheme === 'light') return docTheme;
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('asmo_theme_v2') : null;
     if (saved === 'dark' || saved === 'light') return saved;
-    return typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return 'light'; // Always default to light mode per specification
   });
 
   const toggleTheme = () => {
     const next = theme === 'light' ? 'dark' : 'light';
     setTheme(next);
     document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('asmo_theme', next);
+    localStorage.setItem('asmo_theme_v2', next);
   };
 
   // Prefilled demo credentials per Section 7

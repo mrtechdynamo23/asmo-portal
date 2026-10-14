@@ -31,14 +31,16 @@ export const Header: React.FC<HeaderProps> = ({ onToggleSidebar, isSidebarCollap
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    const saved = localStorage.getItem('asmo_theme');
+    const docTheme = typeof document !== 'undefined' ? (document.documentElement.getAttribute('data-theme') as 'light' | 'dark') : null;
+    if (docTheme === 'dark' || docTheme === 'light') return docTheme;
+    const saved = typeof window !== 'undefined' ? localStorage.getItem('asmo_theme_v2') : null;
     if (saved === 'dark' || saved === 'light') return saved;
-    return typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    return 'light'; // Always default to light mode per specification
   });
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('asmo_theme', theme);
+    localStorage.setItem('asmo_theme_v2', theme);
   }, [theme]);
 
   const personaRef = useRef<HTMLDivElement>(null);

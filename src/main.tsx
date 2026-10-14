@@ -4,13 +4,17 @@ import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 
-// Initialize theme immediately to prevent theme flashing
+// Initialize theme: Default to LIGHT mode initially per user requirement
 try {
-  const savedTheme = localStorage.getItem('asmo_theme') ||
-    (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  // Clear legacy auto-dark preference if first time on v2
+  if (localStorage.getItem('asmo_theme_v2') === null) {
+    localStorage.removeItem('asmo_theme');
+    localStorage.setItem('asmo_theme_v2', 'light');
+  }
+  const savedTheme = localStorage.getItem('asmo_theme_v2') || 'light';
   document.documentElement.setAttribute('data-theme', savedTheme);
 } catch {
-  // Fallback safe
+  document.documentElement.setAttribute('data-theme', 'light');
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
